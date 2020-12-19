@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.4.0</version>
+		<relativePath/>
+	</parent>
+
+	<groupId>com.yo1000</groupId>
+	<artifactId>demo_spring-boot_cloudwatch-logback-appender_newrelic-layout</artifactId>
+	<version>0.0.1</version>
+	<name>${project.artifactId}</name>
+	<description>Spring Boot x CloudWatch Logback Appender x NewRelic layout demo</description>
+
+	<properties>
+		<java.version>8</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- CloudWatch Logback Appender -->
+		<dependency>
+			<groupId>com.j256.cloudwatchlogbackappender</groupId>
+			<artifactId>cloudwatchlogbackappender</artifactId>
+			<version>1.11</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.amazonaws</groupId>
+					<artifactId>aws-java-sdk-logs</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.amazonaws</groupId>
+					<artifactId>aws-java-sdk-ec2</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-logs</artifactId>
+			<version>1.11.915</version>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-ec2</artifactId>
+			<version>1.11.915</version>
+		</dependency>
+
+		<!-- NewRelic -->
+		<dependency>
+			<groupId>com.newrelic.logging</groupId>
+			<artifactId>logback</artifactId>
+			<version>2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.7.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.7.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.18.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Localstack -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>localstack</artifactId>
+			<version>1.15.0</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M5</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.junit.jupiter</groupId>
+						<artifactId>junit-jupiter-engine</artifactId>
+						<version>5.7.0</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<environmentVariables>
+						<SPRING_APPLICATION_AWS_CLOUDWATCHLOGS_REGION>ap-northeast-1</SPRING_APPLICATION_AWS_CLOUDWATCHLOGS_REGION>
+						<SPRING_APPLICATION_AWS_CLOUDWATCHLOGS_ACCESSKEYID>localstackAccessKeyId</SPRING_APPLICATION_AWS_CLOUDWATCHLOGS_ACCESSKEYID>
+						<SPRING_APPLICATION_AWS_CLOUDWATCHLOGS_SECRETACCESSKEY>localstackSecretAccessKey</SPRING_APPLICATION_AWS_CLOUDWATCHLOGS_SECRETACCESSKEY>
+						<SPRING_APPLICATION_AWS_CLOUDWATCHLOGS_LOGGROUP>localstackLogGroup</SPRING_APPLICATION_AWS_CLOUDWATCHLOGS_LOGGROUP>
+						<SPRING_APPLICATION_AWS_CLOUDWATCHLOGS_LOGSTREAM>localstackLogStream</SPRING_APPLICATION_AWS_CLOUDWATCHLOGS_LOGSTREAM>
+					</environmentVariables>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

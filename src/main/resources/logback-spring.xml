@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+    <springProperty name="cloudWatchLogsRegion" source="spring.application.aws.cloudwatch-logs.region" />
+    <springProperty name="cloudWatchLogsAccessKeyId" source="spring.application.aws.cloudwatch-logs.access-key-id" />
+    <springProperty name="cloudWatchLogsSecretAccessKey" source="spring.application.aws.cloudwatch-logs.secret-access-key" />
+    <springProperty name="cloudWatchLogsLogGroup" source="spring.application.aws.cloudwatch-logs.log-group" />
+    <springProperty name="cloudWatchLogsLogStream" source="spring.application.aws.cloudwatch-logs.log-stream" />
+
+    <appender name="CLOUDWATCH_NEWRELIC" class="com.j256.cloudwatchlogbackappender.CloudWatchAppender">
+        <layout class="com.newrelic.logging.logback.NewRelicJsonLayout"/>
+        <maxBatchSize>1</maxBatchSize>
+        <region>${cloudWatchLogsRegion}</region>
+        <accessKeyId>${cloudWatchLogsAccessKeyId}</accessKeyId>
+        <secretKey>${cloudWatchLogsSecretAccessKey}</secretKey>
+        <logGroup>${cloudWatchLogsLogGroup}</logGroup>
+        <logStream>${cloudWatchLogsLogStream}</logStream>
+    </appender>
+    <appender name="CLOUDWATCH_NEWRELIC_ASYNC" class="com.newrelic.logging.logback.NewRelicAsyncAppender">
+        <appender-ref ref="CLOUDWATCH_NEWRELIC" />
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CLOUDWATCH_NEWRELIC" />
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>
